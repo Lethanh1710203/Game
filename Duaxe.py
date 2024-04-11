@@ -21,10 +21,16 @@ pygame.display.set_caption('GAME ĐUA XE')
 gameover = False
 speed = 2
 score = 0
+high_score = 0
+try:
+    with open("high_score.txt", "r") as f:
+        high_score = int(f.read())
+except FileNotFoundError:
+    pass
 
 #Vẽ đường xe chạy
 road_width = 300   #Độ rộng đường xe chạy
-street_width = 20   #Vạch kẻ  đường
+street_width = 10   #Vạch kẻ  đường
 street_height = 50
 
 #Các lane đường
@@ -121,15 +127,15 @@ while running:
     #Vẽ xe player
     player_group.draw(screen)
     #Vẽ phương tiện gt
-    if len(Vehicle_group) <2 :
+    if len(Vehicle_group) < 3 :
         add_verhicle = True
         for verhicle in Vehicle_group:
-            if verhicle.rect.top < verhicle.rect.height * 1.5:
+            if verhicle.rect.top < verhicle.rect.height * 1:
                 add_verhicle = False
         if add_verhicle:
             lane= random.choice(lanes)
             image= random.choice(Vehicle_images)
-            verhicle=Vehicle(image,lane,height / -2)
+            verhicle=Vehicle(image,lane,height / -3)
             Vehicle_group.add(verhicle)
     #Cho xe công cộng chạy
     for vehicle in Vehicle_group:
@@ -150,6 +156,12 @@ while running:
     text_rect= text.get_rect()
     text_rect.center= (50,40)
     screen.blit(text,text_rect)
+    # Hiển thị điểm cao nhất
+    font = pygame.font.Font(pygame.font.get_default_font(), 16)
+    high_score_text = font.render(f"High Score: {high_score}", True, white)
+    high_score_rect = high_score_text.get_rect()
+    high_score_rect.center = (50,70)
+    screen.blit(high_score_text, high_score_rect)
     #Ktr game over
     if gameover:
         screen.blit(crash,crash_rect)
@@ -163,6 +175,12 @@ while running:
     while gameover:
         clock.tick(fps)
         for event in pygame.event.get():
+            # Cập nhật điểm cao nhất:
+            if score > high_score:
+                high_score = score
+                with open("high_score.txt", "w") as f:
+                    f.write(str(high_score))
+
             if event.type==QUIT:
                 gameover= False
                 running = False
