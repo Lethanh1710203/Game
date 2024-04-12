@@ -1,2 +1,2 @@
- # if score > 0 and score % 5 == 0:
+if score > 0 and score % 20 == 0:
             #     speed += 1

@@ -20,6 +20,7 @@ pygame.display.set_caption('GAME ĐUA XE')
 #Khởi tạo biến 
 gameover = False
 speed = 2
+speed_change = 1
 score = 0
 high_score = 0
 try:
@@ -100,8 +101,14 @@ while running:
         if event.type==KEYDOWN:
             if event.key == K_LEFT and player.rect.center[0]>lane_left:
                 player.rect.x -= 100
-            if event.key == K_RIGHT and player.rect.center[0]<lane_right:
-                player.rect.x += 100  
+            elif event.key == K_RIGHT and player.rect.center[0]<lane_right:
+                player.rect.x += 100 
+            elif event.key == K_UP:
+                speed += speed_change  # Tăng tốc độ từ từ
+            elif event.key == K_DOWN:
+                speed -= speed_change  # Giảm tốc độ từ từ
+            if speed < 1:  # Đảm bảo tốc độ không nhỏ hơn 1
+                speed = 1
         #Check va chạm khi điều khiển
         for vehicle in Vehicle_group:
             if pygame.sprite.collide_rect(player,vehicle):
@@ -146,8 +153,8 @@ while running:
             vehicle.kill()
             score += 1
             #TĂNG TỐC ĐỘ CHẠY CỦA XE 
-            if score > 0 and score % 5 == 0:
-                speed += 1
+            # if score > 0 and score % 20 == 0:
+            #     speed += 1
     #Vẽ nhóm xe lưu thông
     Vehicle_group.draw(screen)
     #Hiển thị điểm
