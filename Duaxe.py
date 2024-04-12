@@ -3,6 +3,7 @@ import pygame
 from pygame.locals import *
 import random
 pygame.init()
+
 #CHỉnh màu nền
 gray = (100,100,100)
 green = (76,208,56)
@@ -152,9 +153,7 @@ while running:
         if vehicle.rect.top >= height:
             vehicle.kill()
             score += 1
-            #TĂNG TỐC ĐỘ CHẠY CỦA XE 
-            # if score > 0 and score % 20 == 0:
-            #     speed += 1
+
     #Vẽ nhóm xe lưu thông
     Vehicle_group.draw(screen)
     #Hiển thị điểm

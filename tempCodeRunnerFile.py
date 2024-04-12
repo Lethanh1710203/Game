@@ -1,2 +1,5 @@
-if score > 0 and score % 20 == 0:
-            #     speed += 1
+try:
+    with open("high_score.txt", "r") as f:
+        high_score = int(f.read())
+except FileNotFoundError:
+    pass
