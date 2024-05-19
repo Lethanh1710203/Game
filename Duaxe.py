@@ -4,6 +4,12 @@ from pygame.locals import *
 import random
 pygame.init()
 
+
+# Add âm thanh
+music = pygame.mixer.Sound("images/Amthanh.mp3")
+music.play(loops=-1)
+music.set_volume(0.2)
+
 #CHỉnh màu nền
 gray = (100,100,100)
 green = (76,208,56)
@@ -90,6 +96,8 @@ crash_rect = crash.get_rect()
 #Cài đặt FPS
 clock = pygame.time.Clock()
 fps = 120
+
+
 #Vòng lặp xử lý game
 running = True
 while running:
@@ -114,17 +122,22 @@ while running:
         for vehicle in Vehicle_group:
             if pygame.sprite.collide_rect(player,vehicle):
                 gameover= True   
-                crash_rect.center = [player.rect.center[0],player.rect.top] #Tạo hình vụ va chạm
+                
     #Check va chạm khi đưng yên
     if pygame.sprite.spritecollide(player,Vehicle_group,True):
         gameover =True
+        crash_rect.center = [player.rect.center[0],player.rect.top] #Tạo hình vụ va chạm
+        
     #Vẽ nền địa hình cỏ
     screen.fill(green )
+    
     #Vẽ đường chạy(Road)
     pygame.draw.rect(screen,gray,road)
+   
     #Vẽ biên đường (Edge)
     pygame.draw.rect(screen,yellow,left_edge)
     pygame.draw.rect(screen,yellow,right_edge)
+    
     #Vẽ lane đường 
     lane_move_y += speed* 2
     if lane_move_y >= street_height *2:
@@ -132,8 +145,10 @@ while running:
     for y  in range(street_height * -2,height,street_height * 2):
         pygame.draw.rect(screen,white,(lane_left + 45,y + lane_move_y,street_width,street_height))
         pygame.draw.rect(screen,white,(lane_center + 45,y + lane_move_y,street_width,street_height))
+    
     #Vẽ xe player
     player_group.draw(screen)
+    
     #Vẽ phương tiện gt
     if len(Vehicle_group) < 3 :
         add_verhicle = True
@@ -156,19 +171,23 @@ while running:
 
     #Vẽ nhóm xe lưu thông
     Vehicle_group.draw(screen)
+    
     #Hiển thị điểm
     font= pygame.font.Font(pygame.font.get_default_font(),16)
     text= font.render(f'Socre: {score}',True,white)
     text_rect= text.get_rect()
     text_rect.center= (50,40)
     screen.blit(text,text_rect)
+    
     # Hiển thị điểm cao nhất
     font = pygame.font.Font(pygame.font.get_default_font(), 16)
     high_score_text = font.render(f"High Score: {high_score}", True, white)
     high_score_rect = high_score_text.get_rect()
     high_score_rect.center = (50,70)
     screen.blit(high_score_text, high_score_rect)
+   
     #Ktr game over
+    #Vẽ hình va chạm
     if gameover:
         screen.blit(crash,crash_rect)
         pygame.draw.rect(screen,red,(0,50,width,100))
